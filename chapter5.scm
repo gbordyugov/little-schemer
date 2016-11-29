@@ -132,22 +132,22 @@
     ((or  (atom? a) (atom? b)) #f)
     (else (eqlist? a b))))
 
-(define (eqlist?? a b)
+(define (eqlist? a b)
   (cond
     ((and (null? a) (null? b)) #t)
     ((or  (null? a) (null? b)) #f)
     (else (and (equal? (car a) (car b))
                (equal? (cdr a) (cdr b))))))
 
-(eqlist?? '(strawberry ice cream) '(strawberry ice cream))
+(eqlist? '(strawberry ice cream) '(strawberry ice cream))
 
-(eqlist?? '(banana ((split))) '((banana) (split)))
+(eqlist? '(banana ((split))) '((banana) (split)))
 
-(eqlist?? '(beef ((sausage)) (and (soda)))
-          '(beef ((salami)) (and (soda))))
+(eqlist? '(beef ((sausage)) (and (soda)))
+         '(beef ((salami)) (and (soda))))
 
-(eqlist?? '(beef ((sausage)) (and (soda)))
-          '(beef ((sausage)) (and (soda))))
+(eqlist? '(beef ((sausage)) (and (soda)))
+         '(beef ((sausage)) (and (soda))))
 
 
 ;; continue reading page 94
