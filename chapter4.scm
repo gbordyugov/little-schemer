@@ -160,7 +160,7 @@
 (define eqan?
   (lambda (a b)
     (cond
-      ((and (number? a) (number? b)) (equal a b))
+      ((and (number? a) (number? b)) (= a b))
       ((or (number? a) (number? b)) #f)
       (else (eq? a b)))))
 
