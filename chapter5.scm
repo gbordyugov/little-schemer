@@ -103,7 +103,7 @@
 (define eqan?
   (lambda (a b)
     (cond
-      ((and (number? a) (number? b)) (equal a b))
+      ((and (number? a) (number? b)) (= a b))
       ((or (number? a) (number? b)) #f)
       (else (eq? a b)))))
 
@@ -151,3 +151,31 @@
 
 
 ;; continue reading page 94
+
+(define (rember s l)
+  (cond
+    ((null? l) '())
+    ((atom? (car l))
+     (cond
+       ((equal? (car l) s) (cdr l))
+       (else (cons (car l) (rember s (cdr l))))))
+    (else
+      (cond
+        ((equal? (car l) s) (cdr l))
+        (else (cons (car l) (rember s (cdr l))))))))
+
+(rember '(a b) '((a b) c d ((a b))))
+
+(rember '(a b) '(((a b))))
+
+(define (rember s l)
+  (cond
+    ((null? l) '())
+    ((equal? (car l) s) (cdr l))
+    (else (cons (car l) (rember s (cdr l))))))
+
+(rember '(a b) '((a b) c d ((a b))))
+
+(rember '(a b) '(((a b))))
+
+(rember '(a) '(((a))))
