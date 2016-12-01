@@ -60,3 +60,21 @@
 ((insertR-f eq?) 'o '! '(n o p q r))
 
 ;; continue at the bottom of page 130
+
+(define (ins-r o n l)
+  (cons o (cons n l)))
+
+(define (ins-l o n l)
+  (cons n (cons o l)))
+
+(define insert-g
+  (lambda (ins)
+    (lambda (o n l)
+      (cond
+        ((null? l) '())
+        ((eq? (car l) o) (ins o n ((insert-g ins) o n (cdr l))))
+        (else (cons (car l) ((insert-g ins) o n (cdr l))))))))
+
+((insert-g ins-r) 'o 'n '(b b b o a a a))
+
+((insert-g ins-l) 'o 'n '(b b b o a a a))
