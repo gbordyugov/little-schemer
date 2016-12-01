@@ -80,3 +80,93 @@
 
 (eqset? '(a b) '(b a))
 (eqset? '(3 a b) '(b a 3))
+
+(define (intersect? s1 s2)
+  (cond
+    ((null? s1) #f)
+    (else (or (member? (car s1) s2) (intersect? (cdr s1) s2)))))
+
+(intersect? '(a b) '(x c))
+(intersect? '(a b) '(b c d))
+
+
+(define (intersect s1 s2)
+  (cond
+    ((null? s1) '())
+    ((member? (car s1) s2) (cons (car s1) (intersect (cdr s1) s2)))
+    (else (intersect (cdr s1) s2))))
+
+(intersect '(a b c) '(c d e b))
+
+
+(define (union s1 s2)
+  (cond
+    ((null? s1) s2)
+    (else (makeset (cons (car s1) (union (cdr s1) s2))))))
+
+(define (union s1 s2)
+  (cond
+    ((null? s1) s2)
+    ((member (car s1) s2) (union (cdr s1) s2))
+    (else (cons (car s1) (union (cdr s1) s2)))))
+
+(union '(c c a b c) '(c d e))
+
+(define (intersect-all l)
+  (cond
+    ((null? (cdr l)) (car l))
+    (else (intersect (car l) (intersect-all (cdr l)))))))
+
+(intersect '(b c d) '(c d e))
+(intersect-all '((c d e)))
+(intersect-all '((b c d) (c d e)))
+(intersect-all '((a b c) (b c d) (c d e)))
+
+(define (a-pair? x)
+  (cond
+    ((atom? x) #f)
+    ((null? x) #f)
+    ((null? (cdr x)) #f)
+    (else (null? (cdr (cdr x))))))
+
+(a-pair? 3)
+(a-pair? 'a)
+(a-pair? '())
+(a-pair? '(a))
+(a-pair? '(a b))
+(a-pair? '(a b c))
+
+
+(define (first x)
+  (car x))
+
+(define (second x)
+  (car (cdr x)))
+
+(define (build x y)
+  (cons x (cons y (quote ())))))
+
+(define (third x)
+  (car (cdr (cdr x))))
+
+(define (fun? x)
+  (set? (firsts x)))
+
+(define (revrel r)
+  (cond
+    ((null? r) '())
+    (else (cons (build (second (car r)) (first (car r)))
+                (revrel (cdr r))))))
+
+(revrel '((1 2) (3 4) (5 6)))
+
+(define (revpair p)
+  (build (second p) (first p)))
+
+(define (revrel r)
+  (cond
+    ((null? r) '())
+    (else (cons (revpair (car r)) (revrel (cdr r))))))
+
+(define (fulfun? f)
+  (set? (seconds f)))
