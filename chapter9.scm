@@ -197,20 +197,129 @@
        ((null? l) 0)
        (else (+ 1 ((mk-length mk-length) (cdr l))))))))
 
-; not a working version
 
-;; (((lambda (mk-length)
-;;     (mk-length mk-length))
-;;   (lambda (mk-length)
-;;     ((lambda (length)
-;;        (lambda (l)
-;;          (cond
-;;            ((null? l) 0)
-;;            (else (+ 1 (length (cdr l)))))))
-;;      (mk-length mk-length))))
-;;  '(apples))
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 ((mk-length mk-length) (cdr l))))))))
+ '(a b c d e f g h i j))
+
+
+
+; this works
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 ((mk-length mk-length) (cdr l))))))))
+ '(0 1 2 3 4 5 6 7 8 9))
+
+
 
 (define Y
   (lambda (le)
     ((lambda (f) (f f))
      (lambda (f) (le (lambda (x) ((f f) x)))))))
+
+
+
+;;
+;; after my first read through I really didn't understand anything
+;; decided to go over again
+;;
+
+
+;;
+;; just a recap
+;;
+
+;; length0
+((lambda (l)
+   (cond
+     ((null? l) 0)
+     (else (+ 1 (eternity
+                  (cdr l))))))
+ '())
+
+
+;; length1
+((lambda (l)
+   (cond
+     ((null? l) 0)
+     (else (+ 1 ((lambda (l)
+                   (cond
+                     ((null? l) 0)
+                     (else (+ 1 (eternity
+                                  (cdr l))))))
+                 (cdr l))))))
+ '(0))
+
+
+;; length 2
+((lambda (l)
+   (cond
+     ((null? l) 0)
+     (else (+ 1 ((lambda (l)
+                   (cond
+                     ((null? l) 0)
+                     (else (+ 1 ((lambda (l)
+                                   (cond
+                                     ((null? l) 0)
+                                     (else (+ 1 (eternity
+                                                  (cdr l))))))
+                                 (cdr l))))))
+                 (cdr l))))))
+ '(0 1))
+
+
+;; length 0 again
+(((lambda (length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length (cdr l)))))))
+  eternity)
+ '())
+
+
+;; length 1 again
+(((lambda (length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length (cdr l)))))))
+  ((lambda (length)
+     (lambda (l)
+       (cond
+         ((null? l) 0)
+         (else (+ 1 (length (cdr l)))))))
+   eternity))
+ '(0))
+
+
+;; length 2 again
+(((lambda (length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length (cdr l)))))))
+  ((lambda (length)
+     (lambda (l)
+       (cond
+         ((null? l) 0)
+         (else (+ 1 (length (cdr l)))))))
+   ((lambda (length)
+      (lambda (l)
+        (cond
+          ((null? l) 0)
+          (else (+ 1 (length (cdr l)))))))
+    eternity)))
+ '(0 1))
+
+
+;; refactoring the above code
