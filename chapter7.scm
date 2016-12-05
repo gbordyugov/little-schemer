@@ -144,7 +144,7 @@
   (car (cdr x)))
 
 (define (build x y)
-  (cons x (cons y (quote ())))))
+  (cons x (cons y (quote ()))))
 
 (define (third x)
   (car (cdr (cdr x))))
