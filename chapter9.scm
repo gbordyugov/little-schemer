@@ -197,16 +197,18 @@
        ((null? l) 0)
        (else (+ 1 ((mk-length mk-length) (cdr l))))))))
 
-(((lambda (mk-length)
-    (mk-length mk-length))
-  (lambda (mk-length)
-    ((lambda (length)
-       (lambda (l)
-         (cond
-           ((null? l) 0)
-           (else (+ 1 (length (cdr l)))))))
-     (mk-length mk-length))))
- '(apples))
+; not a working version
+
+;; (((lambda (mk-length)
+;;     (mk-length mk-length))
+;;   (lambda (mk-length)
+;;     ((lambda (length)
+;;        (lambda (l)
+;;          (cond
+;;            ((null? l) 0)
+;;            (else (+ 1 (length (cdr l)))))))
+;;      (mk-length mk-length))))
+;;  '(apples))
 
 (define Y
   (lambda (le)
