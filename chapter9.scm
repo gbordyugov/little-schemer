@@ -323,3 +323,53 @@
 
 
 ;; refactoring the above code
+
+;; length0
+(((lambda (mk-length)
+    (mk-length eternity))
+  (lambda (length-f)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length-f (cdr l))))))))
+ '())
+
+;; length1
+(((lambda (mk-length)
+    (mk-length (mk-length eternity)))
+  (lambda (length-f)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length-f (cdr l))))))))
+ '(0))
+
+;; length2
+(((lambda (mk-length)
+    (mk-length (mk-length (mk-length eternity))))
+  (lambda (length-f)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length-f (cdr l))))))))
+ '(0 1))
+
+;; length3
+(((lambda (mk-length)
+    (mk-length (mk-length (mk-length (mk-length eternity)))))
+  (lambda (length-f)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length-f (cdr l))))))))
+ '(0 1 2))
+
+;; length0
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (length-f)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (length-f (cdr l))))))))
+ '(0))
