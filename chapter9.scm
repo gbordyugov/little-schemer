@@ -324,6 +324,7 @@
 
 ;; refactoring the above code
 
+
 ;; length0
 (((lambda (mk-length)
     (mk-length eternity))
@@ -333,6 +334,7 @@
         ((null? l) 0)
         (else (+ 1 (length-f (cdr l))))))))
  '())
+
 
 ;; length1
 (((lambda (mk-length)
@@ -344,6 +346,7 @@
         (else (+ 1 (length-f (cdr l))))))))
  '(0))
 
+
 ;; length2
 (((lambda (mk-length)
     (mk-length (mk-length (mk-length eternity))))
@@ -353,6 +356,7 @@
         ((null? l) 0)
         (else (+ 1 (length-f (cdr l))))))))
  '(0 1))
+
 
 ;; length3
 (((lambda (mk-length)
@@ -364,6 +368,7 @@
         (else (+ 1 (length-f (cdr l))))))))
  '(0 1 2))
 
+
 ;; length0
 (((lambda (mk-length)
     (mk-length mk-length))
@@ -372,4 +377,106 @@
       (cond
         ((null? l) 0)
         (else (+ 1 (length-f (cdr l))))))))
+ '())
+
+
+
+;; length0 renamed
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 (mk-length (cdr l))))))))
+ '())
+
+
+;; length1
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 ((mk-length eternity) (cdr l))))))))
+ '(1))
+
+
+;; lengthN
+;; this works!
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 ((mk-length mk-length) (cdr l))))))))
+ '(1 2 3))
+
+
+; factoring out (mk-length mk-length)
+; doesn't really work
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    ((lambda (length)
+       (lambda (l)
+         (cond
+           ((null? l) 0)
+           (else (+ 1 ((mk-length mk-length) (cdr l)))))))
+     (mk-length mk-length))))
  '(0))
+
+
+
+;; this works again
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 ((mk-length mk-length) (cdr l))))))))
+ '(1 2 3))
+
+
+;; this works again
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+        (else (+ 1 ((lambda (x)
+                      ((mk-length mk-length) x)) (cdr l))))))))
+ '(0 1 2 3))
+
+
+;; factoring out lambda (x)
+(((lambda (mk-length)
+    (mk-length mk-length))
+  (lambda (mk-length)
+    ((lambda (length)
+       (lambda (l)
+         (cond
+           ((null? l) 0)
+           (else (+ 1 (length (cdr l)))))))
+     (lambda (x)
+       ((mk-length mk-length) x)))))
+ '(0 1 2 3))
+
+
+;; shuffling lambdas
+;; ((lambda (mk-length)
+;;    (mk-length mk-length))
+;;  (lambda (mk-length
+
+(lambda (length)
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+      (else (+ 1 (length (cdr l)))))))
+
+
+;; to be continued
